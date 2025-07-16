@@ -4,8 +4,8 @@ import altair as alt
 
 st.set_page_config(page_title="MBTI 문화/소비 성향 시각화", layout="wide")
 
-# 파일 자동 로딩
-@st.cache
+# CSV 파일 로딩 (캐시 적용)
+@st.cache_data
 def load_data():
     try:
         df = pd.read_csv("countriesMBTI_16types.csv")
@@ -14,28 +14,33 @@ def load_data():
         st.error("❌ 'countriesMBTI_16types.csv' 파일이 현재 폴더에 없습니다.")
         return None
 
+# 데이터 불러오기
 df = load_data()
 
 if df is not None:
-    # 데이터 전처리
+    # 데이터 전처리: long-format으로 변환
     df_melted = df.melt(id_vars=["Country"], var_name="MBTI", value_name="Proportion")
 
     # 제목 및 설명
     st.title("🌍 MBTI 기반 문화/소비 성향 시각화")
     st.markdown(
-        "이 대시보드는 **MBTI 16유형 비율에 따른 국가 간 문화/소비 성향 차이**를 시각화합니다. "
-        "국가별 MBTI 분포는 브랜드 메시지, 마케팅 전략, 소비 트렌드 연구에 활용될 수 있어요. ✨"
+        """
+        이 대시보드는 **MBTI 16유형 비율**에 따라 국가 간 문화적 차이와 소비 성향을 시각화합니다.  
+        MBTI 데이터는 마케팅 전략, 콘텐츠 기획, 브랜드 메시지 설계 등 다양한 분야에 활용될 수 있어요.
+        """
     )
 
-    # 국가 선택 UI
-    countries = df["Country"].unique().tolist()
-    selected = st.multiselect("🔍 비교할 국가를 선택하세요:", countries, default=["South Korea", "United States"])
+    # 국가 선택
+    country_list = df["Country"].unique().tolist()
+    selected_countries = st.multiselect(
+        "🔍 비교할 국가를 선택하세요 (최대 5개 추천)", country_list, default=["South Korea", "United States"]
+    )
 
-    if selected:
-        filtered = df_melted[df_melted["Country"].isin(selected)]
+    if selected_countries:
+        filtered_df = df_melted[df_melted["Country"].isin(selected_countries)]
 
-        # Altair 그래프 생성
-        chart = alt.Chart(filtered).mark_bar().encode(
+        # Altair 시각화
+        chart = alt.Chart(filtered_df).mark_bar().encode(
             x=alt.X("MBTI:N", sort="y"),
             y=alt.Y("Proportion:Q", title="비율"),
             color="Country:N",
@@ -48,8 +53,8 @@ if df is not None:
         st.altair_chart(chart, use_container_width=True)
 
     else:
-        st.info("📌 국가를 하나 이상 선택해 주세요.")
+        st.info("📌 하나 이상의 국가를 선택해주세요!")
 
-    # 참고 문구
+    # 하단 안내
     st.markdown("---")
-    st.caption("© 2025 MBTI Explorer | 데이터 기반 인사이트로 세계를 읽다.")
+    st.caption("© 2025 MBTI Explorer | 데이터를 통해 세계를 이해하다 🌐")
