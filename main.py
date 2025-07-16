@@ -1,40 +1,39 @@
 import streamlit as st
 
-# 책 정보: 제목 + 이미지 URL
+# MBTI별 고전책 추천 사전
 mbti_books = {
-    "INTJ": [
-        ("도덕경 - 노자", "https://upload.wikimedia.org/wikipedia/commons/9/9e/Tao_Te_Ching_%28Chinese%29.jpg"),
-        ("군주론 - 마키아벨리", "https://upload.wikimedia.org/wikipedia/commons/8/8c/Il_Principe_%281532%29.png"),
-        ("월든 - 헨리 데이비드 소로", "https://upload.wikimedia.org/wikipedia/commons/8/88/Walden_Thoreau.jpg")
-    ],
-    "INFP": [
-        ("어린 왕자 - 생텍쥐페리", "https://upload.wikimedia.org/wikipedia/commons/8/88/Littleprince.JPG"),
-        ("폭풍의 언덕 - 에밀리 브론테", "https://upload.wikimedia.org/wikipedia/commons/5/5d/Wuthering_Heights_%281st_ed%29.jpg"),
-        ("빨간 머리 앤 - 루시 모드 몽고메리", "https://upload.wikimedia.org/wikipedia/commons/1/1e/Anne_of_Green_Gables_%281908%29_cover.jpg")
-    ],
-    "ENTP": [
-        ("갈릴레오의 생애 - 브레히트", "https://upload.wikimedia.org/wikipedia/commons/b/bb/Bertolt_Brecht_Galileo.jpg"),
-        ("이방인 - 알베르 카뮈", "https://upload.wikimedia.org/wikipedia/commons/f/f1/L%27%C3%A9tranger_%28Camus_novel%29.jpg"),
-        ("변신 - 카프카", "https://upload.wikimedia.org/wikipedia/commons/2/29/Metamorphosis_by_Franz_Kafka_first_edition.jpg")
-    ]
-    # 필요한 만큼 MBTI 추가 가능
+    "INTJ": ["도덕경 - 노자", "군주론 - 마키아벨리", "월든 - 헨리 데이비드 소로"],
+    "INTP": ["논어 - 공자", "괴테의 파우스트", "방법서설 - 데카르트"],
+    "ENTJ": ["손자병법", "국가 - 플라톤", "위대한 개츠비 - 피츠제럴드"],
+    "ENTP": ["갈릴레오의 생애 - 베르톨트 브레히트", "이방인 - 알베르 카뮈", "변신 - 카프카"],
+    "INFJ": ["데미안 - 헤르만 헤세", "죄와 벌 - 도스토예프스키", "참을 수 없는 존재의 가벼움 - 밀란 쿤데라"],
+    "INFP": ["어린 왕자 - 생텍쥐페리", "폭풍의 언덕 - 에밀리 브론테", "빨간 머리 앤 - 루시 모드 몽고메리"],
+    "ENFJ": ["작은 아씨들 - 루이자 메이 올컷", "태엽 감는 새 - 무라카미 하루키", "안나 카레니나 - 톨스토이"],
+    "ENFP": ["호밀밭의 파수꾼 - 제롬 D. 샐린저", "피터 팬 - 제임스 배리", "이상한 나라의 앨리스 - 루이스 캐럴"],
+    "ISTJ": ["자기 앞의 생 - 로맹 가리", "1984 - 조지 오웰", "카라마조프가의 형제들 - 도스토예프스키"],
+    "ISFJ": ["폭풍의 언덕 - 에밀리 브론테", "작은 아씨들 - 루이자 메이 올컷", "톰 소여의 모험 - 마크 트웨인"],
+    "ESTJ": ["국가 - 플라톤", "데카메론 - 보카치오", "멋진 신세계 - 헉슬리"],
+    "ESFJ": ["오만과 편견 - 제인 오스틴", "제인 에어 - 샬럿 브론테", "데미안 - 헤르만 헤세"],
+    "ISTP": ["변신 - 카프카", "시간의 역사 - 스티븐 호킹", "모비 딕 - 허먼 멜빌"],
+    "ISFP": ["보바리 부인 - 플로베르", "위대한 개츠비 - 피츠제럴드", "아Q정전 - 루쉰"],
+    "ESTP": ["레 미제라블 - 빅토르 위고", "햄릿 - 셰익스피어", "돈키호테 - 세르반테스"],
+    "ESFP": ["이상한 나라의 앨리스 - 루이스 캐럴", "톰 소여의 모험 - 마크 트웨인", "피터 팬 - 제임스 배리"],
 }
 
 def main():
-    st.title("📚 MBTI별 고전책 추천")
-    st.subheader("당신의 MBTI에 어울리는 고전을 골라드릴게요!")
+    st.title("📖 MBTI별 추천 고전책")
+    st.subheader("당신의 MBTI 유형을 선택하면, 어울리는 고전책 3권을 추천해드릴게요!")
 
     mbti_list = sorted(mbti_books.keys())
-    selected_mbti = st.selectbox("당신의 MBTI는?", mbti_list)
+    selected_mbti = st.selectbox("📌 당신의 MBTI를 선택하세요:", mbti_list)
 
     if selected_mbti:
-        st.markdown("### 💡 추천 도서")
-        for title, img_url in mbti_books[selected_mbti]:
-            st.markdown(f"**{title}**")
-            st.image(img_url, width=150)
-            st.markdown("---")
+        st.markdown("### 💡 추천 고전책")
+        for book in mbti_books[selected_mbti]:
+            st.markdown(f"✅ {book}")
 
-    st.caption("© 2025 BookMatch | MBTI별 고전 큐레이션")
+    st.markdown("---")
+    st.caption("© 2025 BookMatch | 귀엽고 단단한 고전 추천기 📚")
 
 if __name__ == "__main__":
     main()
